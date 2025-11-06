@@ -17,7 +17,11 @@ jobs:
     # 3."RUNNER" (EL SERVIDOR TEMPORAL)
     # Le pedimos a GitHub que nos preste una VM de Ubuntu limpia
     runs-on: ubuntu-latest
-
+    # Le dice al runner que cargue los secretos como variables de entorno
+    env:
+      AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+      AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+      AWS_REGION: ${{ secrets.AWS_REGION }}
     # 4. STEPS
     # Las órdenes que correrá en esa VM temporal
     steps:
