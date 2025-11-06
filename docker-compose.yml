@@ -1,0 +1,16 @@
+version: '3.8'
+
+services:
+  localstack:
+    image: localstack/localstack:latest
+    ports:
+      # Este es el puerto principal de la API de LocalStack
+      - "4566:4566"
+      # Este es el puerto para el dashboard web
+      - "8080:8080"
+    environment:
+      # Solo le decimos qué servicios emular para ahorrar recursos
+      - SERVICES=ec2,s3,iam,sts,ssm
+    volumes:
+      # Esto guarda el estado para que no se borre al apagarlo
+      - ./localstack_volume:/var/lib/localstack

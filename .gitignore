@@ -1,0 +1,11 @@
+# Cosas de Terraform
+.terraform/
+terraform.tfstate
+terraform.tfstate.backup
+*.tfvars
+
+# Cosas de Docker / LocalStack
+localstack_volume/
+
+# Cosas del Sistema
+.DS_Store

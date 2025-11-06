@@ -1,0 +1,43 @@
+name: 'Terraform CI - Plan'
+
+# 1. TRIGGER
+# Le dice a GitHub cuando debe correr esto.
+# Lo correrá cada vez que hagamos 'push' a la rama 'main'.
+on:
+  push:
+    branches:
+      - main
+  pull_request: {} # También al abrir un Pull Request
+
+# 2. JOBS
+# Define las tareas que vamos a ejecutar
+jobs:
+  # Nombramos nuestro trabajo 'terraform_plan'
+  terraform_plan:
+    # 3."RUNNER" (EL SERVIDOR TEMPORAL)
+    # Le pedimos a GitHub que nos preste una VM de Ubuntu limpia
+    runs-on: ubuntu-latest
+
+    # 4. STEPS
+    # Las órdenes que correrá en esa VM temporal
+    steps:
+      # Paso 1: Descargar nuestro código
+      - name: Checkout (Descargar código)
+        uses: actions/checkout@v4
+
+      # Paso 2: Instalar Terraform
+      - name: Setup Terraform
+        uses: hashicorp/setup-terraform@v3
+
+      # Paso 3: Correr 'terraform init'
+      - name: Terraform Init
+        run: terraform init
+
+      # Paso 4: Correr 'terraform validate'
+      # (Un chequeo de sintaxis extra, buen`a práctica)
+      - name: Terraform Validate
+        run: terraform validate
+
+      # Paso 5: Correr 'terraform plan'
+      - name: Terraform Plan
+        run: terraform plan
