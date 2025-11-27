@@ -7,12 +7,8 @@ terraform {
   }
 }
 
-# ----- APUNTAR A LOCALSTACK -----
 provider "aws" {
-  region = "us-east-1" # Región de emulación
   
-  # Estas líneas le dicen a Terraform que hable
-  # con tu "AWS Falso" (LocalStack) en localhost
   endpoints {
     ec2 = "http://localhost:4566"
     s3  = "http://localhost:4566"
@@ -27,7 +23,6 @@ provider "aws" {
 }
 
 # ----- FIREWALL -----
-# Definimos un "Security Group"
 resource "aws_security_group" "mi_firewall" {
   name        = "mi-firewall"
   description = "Permite SSH y HTTP"
@@ -46,14 +41,11 @@ resource "aws_security_group" "mi_firewall" {
   }
 }
 
-# ----- CREAR EL SERVIDOR (LA VM) -----
-# Definimos una instancia "EC2"
 resource "aws_instance" "mi_servidor_web" {
-  # Usamos un ID de AMI 'genérico' para LocalStack
+  # ID de AMI 'genérico' para LocalStack
   ami           = "ami-12345678" 
   instance_type = "t2.micro"
   
-  # Asociamos el firewall que creamos arriba
   security_groups = [aws_security_group.mi_firewall.name]
 
   tags = {
@@ -61,9 +53,6 @@ resource "aws_instance" "mi_servidor_web" {
   }
 }
 
-# ----- 4. IMPRIMIR EL "ID" -----
-# Al final, le pedimos a Terraform que nos muestre
-# el ID de la máquina que creó
 output "id_servidor_local" {
   value = aws_instance.mi_servidor_web.id
 }
